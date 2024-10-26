@@ -3,18 +3,22 @@ const express = require('express')
 const mongoose = require('mongoose')
 
 
+const { connectMongoDb } = require("./connection")
+const { logReqRes } = require("./middlewares")
+
+
+
 const app = express()
 const PORT= 8000
 
-mongoose.connect('mongodb+srv://athirarun219:waitnpCa24myAvRI@cluster0.k7u1d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-.then(()=>console.log("MongoDB Connected"))
-.catch((err)=>console.log("mongo error",err))
+
+connectMongoDb('mongodb+srv://athirarun219:waitnpCa24myAvRI@cluster0.k7u1d.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+.then(()=>
+    console.log("Mongodb connected")
+    
+)
 app.use(express.urlencoded({extended:true}))
-const mySerever = http.createServer((req,res)=>{
-console.log(req);
-res.end("Hello from server")
+app.use(logReqRes("log.txt"))
 
-});
-
-mySerever.listen(5000,()=>console.log("Server started"))
+app.listen(PORT,()=>console.log(`Server started at PORT :${PORT}`))
 
